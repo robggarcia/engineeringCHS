@@ -1,0 +1,41 @@
+/*
+Rob Garcia - Engineering 1
+Servo Control: Use the Servo.h library to control a continuous rotation micro Servo motor with two buttons
+*/
+
+// Import the Servo.h library and define a new servo object as myServo
+#include <Servo.h>
+Servo myServo;
+
+// define variables for button pins, servo pin, and the initial state for each button
+int buttonPin1 = 2;  
+int buttonPin2 = 3;  
+int servoPin = 9;
+int buttonState1 = 0;  
+int buttonState2 = 0;  
+
+void setup() {  
+  Serial.begin(9600);             // initialize the serial monitor
+  pinMode(buttonPin1, INPUT);     // define the button pins as inputs
+  pinMode(buttonPin2, INPUT)
+  myServo.attach(servoPin);       // set the servo to be controlled by the Servo Pin
+}
+
+void loop() {
+  buttonState1 = digitalRead(buttonPin1);     //read the input from the button pins
+  buttonState2 = digitalRead(buttonPin2);
+  
+  if(buttonState1 == HIGH){
+  Serial.println("button 1 is on");     //if button 1 is being pressed, say the following
+  myServo.write(120);                   //and spin the servo one direction
+  }
+  
+  if(buttonState2 == HIGH){
+  Serial.println("button 2 is on");     //if button 2 is being pressed, say the following
+  myServo.write(60);                    //and spin the servo the other direction
+  }
+  
+  if (buttonState1 == LOW && buttonState2 == LOW){        //if both buttons are not being pressed
+    myServo.write(90);//stop spinning the servo.
+  }
+}
