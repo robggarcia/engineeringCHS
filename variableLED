@@ -1,0 +1,33 @@
+/*
+  Rob Garcia, Engineering 1
+  Variable LED Blink - control an LED to blink at 1 full second, then blink faster and faster until it reaches 100 ms and blinks forever at this rate
+*/
+
+int ledPIN = 10 ;       // connect the LED to pin 10
+int delayVar = 1000;    // set delay variable to start at 1 full second
+
+void setup() {
+    Serial.begin(9600);   // Starts the serial monitor
+    Serial.println("This is Garcia's Code for Variable LED Blinker"); // Prints to the serial monitor 1 time.
+    pinMode(ledPIN, OUTPUT);    // set LED pin as an output
+}
+
+void loop() {
+    if (delayVar > 100) {       // conditional statement that checks if the delay time is larger than 100 ms
+      Serial.print("The delay time is ");
+      Serial.println(delayVar);
+      digitalWrite(ledPIN, HIGH);
+      delay(delayVar);
+      digitalWrite(ledPIN, LOW);
+      delay(delayVar);
+      delayVar = delayVar - 100;    // if the first condition is true, then the LED will blink faster and faster
+    }
+  else {                            // once the delay variable is equal to 100 ms, the LED will blink forever at this rate
+      Serial.print("The delay time is ");
+      Serial.println(delayVar);
+      digitalWrite(ledPIN, HIGH);
+      delay(delayVar);
+      digitalWrite(ledPIN, LOW);
+      delay(delayVar);
+  }
+}
