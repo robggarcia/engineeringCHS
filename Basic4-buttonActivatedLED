@@ -1,0 +1,42 @@
+/*
+Rob Garcia - Engineering 1
+Button-Activated LED: control an LED to blink when a button is pressed
+*/
+
+
+// define variables for LED and button pins as well as delay time, counter, and button state
+int pin_LED = 13;
+int pin_button = 7;
+int button_status = 0;
+int delay_time = 250;
+int counter_LED = 0;
+
+// initialize the serial monitor and specify the pin modes for the LED and button
+void setup() {
+    pinMode(pin_LED, OUTPUT);
+    pinMode(pin_button, INPUT);
+    Serial.begin(9600);
+}
+
+void loop() {
+  button_status = digitalRead(pin_button);        // read button status
+  
+  if (button_status==1){                          // if button is pressed blink the LED at the specified delay time
+   Serial.println("Button is pressed!");
+     if (counter_LED < 5){
+        digitalWrite(pin_LED,HIGH);
+        delay(delay_time);
+        digitalWrite(pin_LED,LOW);
+        delay(delay_time);
+        counter_LED = counter_LED+1;
+        Serial.print("The LED has blinked ");     // print a message to the serial monitor for how many times the LED has blinked
+        Serial.print(counter_LED);
+        Serial.println(" many times.")
+      }
+    }
+    else {                                         // if button is not pressed
+    Serial.println("Button is not pressed!");
+    digitalWrite(pin_LED,LOW);
+    counter_LED=0;
+    }
+}
