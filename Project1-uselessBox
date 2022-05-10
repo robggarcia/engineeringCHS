@@ -1,0 +1,31 @@
+/*
+  Garcia - This is my code to use for my Useless Box
+*/
+
+#include <Servo.h>
+Servo myServo;
+int servoPin = 8;
+
+int switchPin = 4;
+int switchState;
+
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(switchPin, INPUT_PULLUP);
+  myServo.attach(servoPin);
+  myServo.write(90);
+}
+
+void loop() {
+  switchState = digitalRead(switchPin);
+  if (switchState == LOW) {
+    myServo.write(40);
+    Serial.println("The switch is ON");
+  }
+  else {
+    myServo.write(170);
+    Serial.println("The switch is OFF");
+  }
+}
+
