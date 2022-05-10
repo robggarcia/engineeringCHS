@@ -1,1 +1,42 @@
+/*
+  Rob Garcia - Engineering 2 Photointerrupter Assignment
+  This code attaches a Photointerrupter and calls the function blink() in order to turn on and off an LED
+  when the photointerrupter senses a change.
+  I made it spicy by printing the number of times the photointerrupter was triggered on an LCD screen
+*/
 
+#include <LiquidCrystal_I2C.h>
+// Create an LCD object
+//   Set the LCD address to 0x27 for a 16 chars and 2 line display.
+//   If 0x27 doesn't work, try 0x3F.
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+
+int ledPin = 8;  // attach pin 8 to an LED
+int interruptPin = 2;  // attach the photointerrupter to pin 2
+int state = HIGH;  // set the initial state of the LED to be on
+int interCount = 0;
+
+void setup() {
+  Serial.begin(9600);  // initialize the serial monitor
+  lcd.init(); // initialize the LCD screen
+  lcd.backlight();  // turn on the backlight of the LCD screen
+  pinMode(ledPin, OUTPUT);  // define the ledPin 8 to be an output
+  pinMode(interruptPin, INPUT_PULLUP);  // define the photointerrupter pin 2 to be an input with a pullup resistor
+  // attach the photointerrupter to call the function blink() when a change occurs
+  attachInterrupt(digitalPinToInterrupt(interruptPin), blink, CHANGE);
+}
+
+void loop() {
+  lcd.setCursor(0, 0);  // sets the cursor on the first line of the LCD screen
+  lcd.print("Interrupt Count:");  // prints text to the LCD screen at the specified cursor
+  digitalWrite(ledPin, state);  // while the program is running turn on or off the LED according to the variable state
+  lcd.setCursor(0, 1);
+  lcd.print(interCount);  // prints the number of times the photointerrupter is triggered
+
+}
+
+void blink() {
+  state = !state;  // if an interrupt occurs change the value of the state variable to its opposite
+  interCount++;  // the variable interCount is increased by a value of 1each time the photointerrupter is triggered
+}
