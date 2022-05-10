@@ -1,1 +1,25 @@
+/*
+  Rob Garcia - Engineering 2
+  Photoresistor - Control the brightness of an LED with a photoresistor.  When the light level is low, the LED will turn on.  It's a night-light!
+*/
 
+// define variables for the pins and initial light level value
+int ledPin = 6;
+int photoPin = A0;  //Set A0(Analog Input) for LDR.
+int value = 0;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(ledPin, OUTPUT);
+  digitalWrite(ledPin, LOW);
+}
+
+void loop() {
+  value = analogRead(photoPin); // read the value from the photoresistor
+  value = map(ldr, 0, 1028, 0, 255); // map the analog signal to a value usable by the digital PMW pin
+
+  Serial.println("The PMW Pin value is :");
+  Serial.println(value);//prints the value
+
+  analogWrite(6, value);//prints the value to the led
+}
