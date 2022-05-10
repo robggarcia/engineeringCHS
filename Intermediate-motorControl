@@ -1,1 +1,21 @@
+/*
+  Rob Garcia - Engineering 2
+  This code is used to test the variable speed control of a DC motor from a potentiometer
+*/
+int motorPin = 6;
+int potPin = A0;
+int motorSpeed;
 
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(motorPin, OUTPUT);
+  pinMode(potPin, INPUT);
+}
+
+void loop() {
+  motorSpeed = analogRead(potPin)/4;  //Analog values can be read between 0 - 1023
+                                      //We divide by 4 in order to map the value from 0 - 255 for a PWM pin
+  Serial.println(motorSpeed);
+  analogWrite(motorPin, motorSpeed);
+}
