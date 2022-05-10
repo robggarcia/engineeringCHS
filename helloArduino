@@ -1,0 +1,20 @@
+/*
+  Rob Garcia, Engineering 1
+  Hello Arduino - For this assignment, I am asked to control an LED to blink 2 times a second.  
+*/
+
+int ledPIN = 2;  // define a variable to specify that the LED is connected to Pin 2.
+
+void setup() {
+    Serial.begin(9600);                       // initialize the serial monitor
+    Serial.println("This is my new Code!");   // Print to the serial montitor
+    pinMode(ledPIN, OUTPUT);                  // set the LED pin to be an output
+}
+
+void loop() {
+    digitalWrite(ledPIN, HIGH);               // turn the LED on
+    Serial.println("blink!");                 // print to the serial monitor
+    delay(250);                               // delay for a quarter of a second
+    digitalWrite(ledPIN, LOW);                // turn the LED off
+    delay(250);                               // delay for a quarter of a second
+}
