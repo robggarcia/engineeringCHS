@@ -1,0 +1,88 @@
+/*
+  Garcia - Engineering 2
+  This code is for the 2nd Project in Engineering 2 to control my drag racer
+  My circuit includes 1 button, 1 LED, 1 photointerrupter, and an H-Bridge
+  I have included a potentiometer to adjust the time that the motor runs
+*/
+
+// initialize the photointerrupter
+int ledPin = 8;  // attach pin 8 to an LED
+int interruptPin = 2;  // attach the photointerrupter to pin 2
+int state = LOW;  // set the initial state of the motor
+int runState = LOW;
+
+int buttonPin = 4;
+int buttonState = LOW;
+
+// initialize the h-bridge
+int ain1Pin = 10;
+int ain2Pin = 11;
+int revSpeed;
+int forSpeed;
+
+// initialize the potentiometer adjustment
+int potPin = A1;
+int runTime = 0;
+
+void setup() {
+  Serial.begin(9600);
+
+  pinMode(interruptPin, INPUT_PULLUP);  // define the photointerrupter pin 2 to be an input with a pullup resistor
+  // attach the photointerrupter to call the function toArm() when signal is blocked
+  attachInterrupt(digitalPinToInterrupt(interruptPin), toArm, CHANGE);
+
+  // define pins for the h-bridge,button, and LED indicator
+  pinMode(ain1Pin, OUTPUT);
+  pinMode(ain2Pin, OUTPUT);
+  pinMode(buttonPin, INPUT_PULLUP);
+  pinMode(ledPin, OUTPUT);          // LED indicator for arming the photointerrupter
+}
+
+void loop() {
+  // control the H-bridge to be at a full stop
+  digitalWrite(ain2Pin, 1);
+  digitalWrite(ain1Pin, 1);
+
+  // adjust the time that the motor runs during the race
+  runTime = map(analogRead(potPin), 0, 1023, 400, 1000);
+  Serial.print("runTime = ");
+  Serial.println(runTime);
+
+  // when the photointerrupter is open, the arm button can be pressed
+  Serial.println(state);
+  if (state == HIGH) {
+    Serial.println("in first loop");
+    buttonState = digitalRead(buttonPin);
+    if (buttonState == HIGH){ 
+      digitalWrite(ledPin, HIGH);
+      Serial.println("the car is armed");
+      runState = HIGH;
+    }
+  }
+  
+  if (runState == HIGH && state == LOW) {
+    go();
+  }
+}
+
+void toArm() {
+  state = !state;  // if an interrupt occurs change the value of the state variable to its opposite
+}
+
+void go() {
+  // Move the car forward for time increment
+  digitalWrite(ain2Pin, 1);
+  for (int time = 0; time < runTime; time++) {
+    analogWrite(ain1Pin, 0);
+    Serial.println(time);
+  }
+  // After designated time, the car will coast to a stop for 1 second
+  digitalWrite(ledPin, LOW);
+  digitalWrite(ain2Pin, 0);
+  digitalWrite(ain1Pin, 0);
+  delay(1000);
+  //  After 1 second the car will hard break when it returns back to main loop
+  // change the buttonState back to the original value
+  runState = LOW;
+  Serial.println("The car is not armed");
+}
