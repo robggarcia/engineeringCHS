@@ -1,0 +1,25 @@
+/*
+  Rob Garcia, Engineering 1
+  Finite LED - make an LED blink 5 times
+*/
+
+int ledPIN = 2;   // define a variable for the LED pin
+int counter = 0;  // define a variable to count the number of times the LED blinks
+
+void setup() {
+    Serial.begin(9600);   // initialize the serial monitor
+    Serial.println("This is Rob Garcia's code for Finite LED Blinker");   // print to the serial monitor
+    pinMode(ledPin, OUTPUT);    // specify the LED pin as an output
+}
+
+void loop() {
+    if (counter <5) {               // a conditional statement to check the value of the counter variable
+      counter = counter + 1;        // if true, then the loop begins by counting up by a value of 1
+      serial.println(counter);      // print the value of the counter to the serial monitor to check functionality
+      digitalWrite(ledPIN, HIGH);   // blink the LED
+      Serial.println("blink!");
+      delay(250);
+      digitalWrite(ledPIN, LOW);
+      delay(250);
+    }
+}
