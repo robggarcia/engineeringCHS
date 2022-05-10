@@ -1,1 +1,24 @@
+/*
+  Rob Garcia - Engineering 2
+  LED Fade:  control an LED to fade on and off continuously
+*/
+
+int ledPin = 5;     // define the pin connected to the LED
+int step = 10;      // define the step size for the change in brightness
+int bright = 0;     // define the brightness level
+
+void setup() {
+  Serial.begin(9600);                   // start the serial monitor
+  pinMode(ledPin, OUTPUT);              // sets the LED Pin as an output
+}
+
+void loop() {
+  analogWrite(ledPin, bright);          // turn on the LED to the current brightness level
+  Serial.println(bright);               // print the brightness level to the serial monitor
+  bright = bright + step;   
+  delay(30);
+  if (bright > 255 || bright < 0) {
+    step = -step;
+  }
+}
 
