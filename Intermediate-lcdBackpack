@@ -1,1 +1,57 @@
+/*
+  Rob Garcia: Engineering 2 - This code displays the number of times a button has been pressed on an LCD display.
+  If a switch is attached, the button count will either go up or down depending on the state of the switch.
+*/
 
+#include <LiquidCrystal_I2C.h>
+
+// Create an LCD object
+//   Set the LCD address to 0x27 for a 16 chars and 2 line display.
+//   If 0x27 doesn't work, try 0x3F.
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+// define variables for each pin used and set initial values for buttons or switches
+int buttonPin = 12;
+int buttonState = 0;
+int change;
+int buttonCount = 0;
+int switchPin = 8;
+int switchState = 0;
+
+void setup() {
+  Serial.begin(9600);    // start the serial monitor
+  lcd.init();            // initialize the LCD screen
+  lcd.backlight();
+  pinMode(buttonPin, INPUT);     // define the button pin as an input
+  pinMode(switchPin, INPUT_PULLUP);     // define the switch pin as an input with a pullup resistor
+  buttonState = digitalRead(buttonPin); // read the initial state of the button;
+}
+
+void loop() {
+  lcd.setCursor(0, 0);
+  lcd.print("Button Pressed:");
+  switchState = digitalRead(switchPin); // read the current state of the switch
+  change = digitalRead(buttonPin);      // read the current state of the button
+  if (switchState == 1) {
+    if (change != buttonState) {          // once the button is pressed it will go into this loop
+      if (change == 0) {                  // then the next loop begins, when the button has been released
+        Serial.println("the button has been pressed");
+        buttonCount++;
+        lcd.setCursor(0, 1);
+        lcd.print(buttonCount);
+      }
+    }
+    buttonState = change;
+  }
+  if (switchState == 0) {
+    if (change != buttonState) {          // once the button is pressed it will go into this loop
+      if (change == 0) {                  // then the next loop begins, when the button has been released
+        Serial.println("the button has been pressed");
+        buttonCount--;
+        lcd.setCursor(0, 1);
+        lcd.print(buttonCount);
+      }
+    }
+    buttonState = change;
+  }
+}
