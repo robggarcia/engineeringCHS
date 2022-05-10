@@ -1,0 +1,50 @@
+/*
+  Rob Garcia - Engineering 1
+  Two Buttons Two LEDS: This code is supposed to blink an LED light when a button is pressed.
+*/
+
+//  define button and LED pins as variabls
+const int buttonPin1 = 7;
+const int buttonPin2 = 6;
+const int ledPin1 = 9;
+const int ledPin2 = 10;
+
+// define the initial state for each button
+int buttonState1 = 0;
+int buttonState2 = 0;
+
+void setup()
+{
+  Serial.being(9600);           //  initialize the serial monitor
+  pinMode(buttonPin1, INPUT);   //  specify button pins as inputs and led pins as outputs
+  pinMode(buttonPin2, INPUT);
+  pinMode(ledPin1, OUTPUT);
+  pinMode(ledPin2, OUTPUT);
+}
+
+void loop()
+{
+  buttonState1 = digitalRead(buttonPin1);
+  if (buttonState1 == HIGH)       // checks if button 1 is on
+  {
+    digitalWrite(ledPin1, HIGH);  //if it is being pushed, turn on LED 1
+    Serial.println("button 1 is being pressed");
+  }
+  else {
+    digitalWrite(ledPin1, LOW);   //if not, keep it off
+
+  }
+
+  {
+    buttonState2 = digitalRead(buttonPin2);//checks if button 2 is being pressed
+    if (buttonState2 == HIGH)
+    {
+      digitalWrite(ledPin2, HIGH);    //if so, turn on LED 2
+      Serial.println("button 2 is being pressed");
+    }
+    else
+    {
+      digitalWrite(ledPin2, LOW);   //otherwise, keep LED 2 off
+    }
+  }
+}
