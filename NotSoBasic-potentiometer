@@ -1,1 +1,22 @@
+/*
+	Rob Garcia
+    Engineering 2
+    Potentiometer LED - Control the brightness of an LED with a potentiometer
+*/
 
+int ledPin = 11;
+int potPin = A3;
+//int potRead = 0;
+
+void setup()
+{
+  Serial.begin(9600);
+  Serial.println("This is Garcia's code for Potentiometer");
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop()
+{
+  //potRead = analogRead(potPin);
+  analogWrite(ledPin, analogRead(potPin) / 4);
+}
