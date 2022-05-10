@@ -1,1 +1,87 @@
+/*
+  Rob Garcia - Engineering 2: For this assignment I will use an H bridge to control a DC motor
+  I will write functions that move the motor forward or backward at varying speeds
+  Then create two additional functions to stop th emotor in coast or break mode
+*/
+
+int potPin = A0;
+int potVal;
+int ain1Pin = 11;
+int ain2Pin = 10;
+int revSpeed;
+int forSpeed;
+int switchPin = 2;
+int switchVal;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(ain1Pin, OUTPUT);
+  pinMode(ain2Pin, OUTPUT);
+  pinMode(switchPin, INPUT_PULLUP);
+}
+
+// function to control motor in reverse direction
+void motorReverse() {
+  digitalWrite(ain1Pin, 1);
+  revSpeed = map(potVal, 0, 1023 / 2, 0, 255);
+  Serial.print("revSpeed: ");
+  Serial.println(revSpeed);
+  analogWrite(ain2Pin, revSpeed);
+}
+
+// function to control motor in forward direction
+void motorForward() {
+  digitalWrite(ain2Pin, 1);
+  forSpeed = map(potVal, 1023 / 2, 1023, 255, 0);
+  Serial.print("forSpeed: ");
+  Serial.println(forSpeed);
+  analogWrite(ain1Pin, forSpeed);
+}
+
+// function to coast the motor to a stop
+void motorCoast() {
+  digitalWrite(ain1Pin, 0);
+  digitalWrite(ain2Pin, 0);
+  Serial.println("The motor is coasting");
+}
+
+// function to brake the motor to a stop
+void motorBrake() {
+  digitalWrite(ain1Pin, 1);
+  digitalWrite(ain2Pin, 1);
+  Serial.println("The motor is breaking");
+}
+
+void loop() {
+  potVal = analogRead(A0);
+  Serial.print("Pot Value: ");
+  Serial.println(potVal);
+  switchVal = digitalRead(switchPin);
+  Serial.print("Switch Pin: ");
+  Serial.println(switchVal);
+  delay(100);
+  if (potVal <= 1023 / 2) {   // if potentiometer is below halfway, move motor in reverse and increase speed
+    motorReverse();
+    if (potVal == 0) {       // if top speed is reached, the switch will determine how to brake
+      if (switchVal == 0) {
+        motorCoast();
+      }
+      else {
+        motorBrake();
+      }
+    }
+  }
+  if (potVal > 1023 / 2) {   // if potentiometer is above halfway, movoe motor forward and increase speed
+    motorForward();
+    if (potVal == 1023) {    // if top speed is reached, the switch will determine how to brake
+      if (switchVal == 0) {
+        motorCoast();
+      }
+      else {
+        motorBrake();
+      }
+    }
+  }
+
+}
 
