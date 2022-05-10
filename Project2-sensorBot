@@ -1,0 +1,35 @@
+/*
+  Rob Garcia - Sensor Bot
+  This is example code to help students get started programming an Arduino to control 
+  a continuous rotation servo motor based on input from an Ultrasonic Sensor
+*/
+
+#include <NewPing.h>
+#define TRIGGER_PIN 12
+#define ECHO_PIN 11
+#define MAX_DISTANCE 200
+int dist;
+
+NewPing myHCSR04(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
+
+#include <Servo.h>
+Servo myservo1;         // create servo object to control servo1
+
+void setup() {
+  Serial.begin(9600);
+  myservo1.attach(9);  // attaches servo1 on pin 9
+}
+
+void loop() {
+  dist = myHCSR04.ping_cm();
+  Serial.println(dist);
+  delay(50);
+  if (dist < 10 && dist > 0) {        // asks if the distance is less than 10cm and greater than 0 cm
+    delay(500);                         // stop for half a second
+    myservo1.write(150);                // sets direction and speed for servo1
+    delay(500);                         // rotates servo1 for half a second
+  }
+  else {                              // if distance is NOT less than 10cm
+    myservo1.write(30);
+  }
+}
