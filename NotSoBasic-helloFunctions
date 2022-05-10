@@ -1,1 +1,45 @@
+/*
+  Rob Garcia
+  Engineering 2
+  Hello Functions - Control the rotation of a Servo Motor through the use of an HC-SRO4 Ultrasonic Sensor.  Make use of Functions to clean up the code.
+*/
 
+// setup variables for the ultrasonic sensor
+int trigPin = 3;
+int echoPin = 2;
+long duration;
+int distance;
+
+// setup for servo
+#include <Servo.h>		// include the servo library
+Servo myServo;        // create a new servo object called myServo
+int servRotation;
+
+void setup() {
+  pinMode(trigPin, OUTPUT);		// Define trigPin to send wave out
+  pinMode(echoPin, INPUT);		// Define echoPin to recieve wave back
+  Serial.begin(9600);
+  Serial.println("Ultrasonic Sensor test");
+  
+  myServo.attach(9);	// connects servo to pin 9
+}
+
+void loop() {
+  ultraSensor();      // Call a function to calculate and return the distance from sensor
+  distance = map(distance, 0, 344, 0, 180);   // map the distance to a usable value to control the servo motor
+  myServo.write(distance);
+}
+
+int ultraSensor() {
+  digitalWrite(trigPin, LOW);
+  delay(2);
+  digitalWrite(trigPin, HIGH);
+  delay(10);
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+  distance = duration * 0.034 / 2;
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+  return distance;
+}
