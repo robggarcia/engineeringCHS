@@ -10,7 +10,9 @@ Each class has 2 projects per school year.
 * Two Buttons Two LEDs
 * Servo Control
 
-**Project 1: ** Useless Box
+>Project 1: Useless Box
+
+---
 
 ## Not So Basic Arduino Module
 * LED Fade
@@ -19,8 +21,16 @@ Each class has 2 projects per school year.
 * Hello Functions
 * newPing()
 
+>Project 2: Servo and Sensor 
+
+---
+
 ## Intermediate Arduino
 * LCD Backpack
 * Photointerrupter
 * DC Motor Control
 * H Bridge
+
+>Project 3: Drag Racer 
+
+---
